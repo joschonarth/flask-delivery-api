@@ -8,7 +8,7 @@ class DBConnectionHandler:
             "localhost",
             "27017"
         )
-        self.__database_name = "storage.db"
+        self.__database_name = "delivery_db"
         self.__client = None
         self.__db_connection = None
 
