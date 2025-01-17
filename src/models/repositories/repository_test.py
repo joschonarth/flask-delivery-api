@@ -37,3 +37,20 @@ def test_select_one():
     doc_filter = { "shipped": True }
     response = orders_repository.select_one(doc_filter)
     print(response)
+
+@pytest.mark.skip(reason="interaction with the database")
+def test_select_many_with_properties():
+    orders_repository = OrdersRepository(conn)
+    doc_filter = { "shipped": True }
+    response = orders_repository.select_many_with_properties(doc_filter)
+    print(response)
+    for doc in response:
+        print(doc)
+
+@pytest.mark.skip(reason="interaction with the database")
+def test_select_if_property_exists():
+    orders_repository = OrdersRepository(conn)
+    response = orders_repository.select_if_property_exists()
+    print(response)
+    for doc in response:
+        print(doc)
