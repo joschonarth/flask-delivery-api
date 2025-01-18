@@ -64,3 +64,11 @@ class OrdersRepository:
             { "_id": ObjectId(object_id), "items.name": item_name },
             { "$inc": { "items.$.quantity": 1 } }
         )
+
+    def delete_registry(self, object_id: str) -> None:
+        collection = self.__db_connection.get_collection(self.__collection_name)
+        collection.delete_one({ "_id": ObjectId(object_id) })
+
+    def delete_many_registries(self) -> None:
+        collection = self.__db_connection.get_collection(self.__collection_name)
+        collection.delete_many({ "shipped": True })

@@ -104,3 +104,14 @@ def test_edit_registry_with_increment():
     object_id = "678aea30acd432c259ed0453"
     item_name = "Laptop"
     orders_repository.edit_registry_with_increment(object_id, item_name)
+
+@pytest.mark.skip(reason="interaction with the database")
+def test_delete_registry():
+    orders_repository = OrdersRepository(conn)
+    object_id = "678aea30acd432c259ed0457"
+    orders_repository.delete_registry(object_id)
+
+@pytest.mark.skip(reason="interaction with the database")
+def test_delete_may_registries():
+    orders_repository = OrdersRepository(conn)
+    orders_repository.delete_many_registries()
