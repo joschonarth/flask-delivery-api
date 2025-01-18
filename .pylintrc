@@ -7,6 +7,9 @@ disable=
       C0209, # consider-using-f-string
       E0015, # unrecognized-option
       W0703, # Catching too general exception Exception
+      R0903, # too-few-public-methods
+      C0301, # line-too-long
+      R0902, # too-many-instance-attributes
 
 # Analyse import fallback blocks. This can be used to support both Python 2 and
 # 3 compatible code, which means that the block might have code that exists
