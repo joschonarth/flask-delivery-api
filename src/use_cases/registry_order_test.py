@@ -19,18 +19,28 @@ def test_registry():
     mock_registry = HttpRequest(
         body={
             "data": {
-                "order_id": "123",
-                "items": ["item1", "item2"],
-                "total": 100.0
+                "order_id": 1,
+                "customer": "John Doe",
+                "items": [
+                    {"name": "Laptop", "quantity": 1},
+                    {"name": "Keyboard", "quantity": 1}
+                ],
+                "total": 900.00,
+                "shipped": True
             }
         }
     )
 
     response = registry_order.registry(mock_registry)
 
-    assert repo.insert_document_att["document"]["order_id"] == "123"
-    assert repo.insert_document_att["document"]["items"] == ["item1", "item2"]
-    assert repo.insert_document_att["document"]["total"] == 100.0
+    assert repo.insert_document_att["document"]["order_id"] == 1
+    assert repo.insert_document_att["document"]["customer"] == "John Doe"
+    assert repo.insert_document_att["document"]["items"] == [
+        {"name": "Laptop", "quantity": 1},
+        {"name": "Keyboard", "quantity": 1}
+    ]
+    assert repo.insert_document_att["document"]["total"] == 900.00
+    assert repo.insert_document_att["document"]["shipped"] is True
     assert "created_at" in repo.insert_document_att["document"]
     assert response.status_code == 201
     assert response.body == {
@@ -48,9 +58,14 @@ def test_registry_with_error():
     mock_registry = HttpRequest(
         body={
             "data": {
-                "order_id": "123",
-                "items": ["item1", "item2"],
-                "total": 100.0
+                "order_id": 1,
+                "customer": "John Doe",
+                "items": [
+                    {"name": "Laptop", "quantity": 1},
+                    {"name": "Keyboard", "quantity": 1}
+                ],
+                "total": 900.00,
+                "shipped": True
             }
         }
     )
