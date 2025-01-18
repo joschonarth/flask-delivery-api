@@ -36,10 +36,31 @@ class OrdersRepository:
         response = collection.find(
             { "address": { "$exists": True } },
             { "_id": 0, "order_id": 0, "total": 0, "shipped": 0 }
-            )
+        )
         return response
 
     def select_by_object_id(self, object_id: str) -> list:
         collection = self.__db_connection.get_collection(self.__collection_name)
         data = collection.find_one({ "_id": ObjectId(object_id) })
         return data
+
+    def edit_registry(self, object_id: str) -> None:
+        collection = self.__db_connection.get_collection(self.__collection_name)
+        collection.update_one(
+            { "_id": ObjectId(object_id) },
+            { "$set": { "total": 1000 } }
+        )
+
+    def edit_many_registries(self) -> None:
+        collection = self.__db_connection.get_collection(self.__collection_name)
+        collection.update_many(
+            { "shipped": False },
+            { "$set": {"shipped": True } }
+        )
+
+    def edit_registry_with_increment(self, object_id: str, item_name: str) -> None:
+        collection = self.__db_connection.get_collection(self.__collection_name)
+        collection.update_one(
+            { "_id": ObjectId(object_id), "items.name": item_name },
+            { "$inc": { "items.$.quantity": 1 } }
+        )

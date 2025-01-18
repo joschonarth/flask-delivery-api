@@ -86,3 +86,21 @@ def test_select_by_object_id():
     object_id = "678ae9ddc62fca13b6e23dd3"
     response = orders_repository.select_by_object_id(object_id)
     print(f"\n{response}")
+
+@pytest.mark.skip(reason="interaction with the database")
+def test_edit_registry():
+    orders_repository = OrdersRepository(conn)
+    object_id = "678aea30acd432c259ed0453"
+    orders_repository.edit_registry(object_id)
+
+@pytest.mark.skip(reason="interaction with the database")
+def test_edit_many_registries():
+    orders_repository = OrdersRepository(conn)
+    orders_repository.edit_many_registries()
+
+@pytest.mark.skip(reason="interaction with the database")
+def test_edit_registry_with_increment():
+    orders_repository = OrdersRepository(conn)
+    object_id = "678aea30acd432c259ed0453"
+    item_name = "Laptop"
+    orders_repository.edit_registry_with_increment(object_id, item_name)
