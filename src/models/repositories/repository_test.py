@@ -9,16 +9,17 @@ conn = db_connection_handler.get_db_connection()
 @pytest.mark.skip(reason="interaction with the database")
 def test_insert_document():
     orders_repository = OrdersRepository(conn)
-    my_doc = {"order_id": 1, "customer": "John Doe", "items": ["Laptop"], "total": 900.00, "shipped": True}
+    my_doc = {"order_id": 1, "customer": "John Doe", "items": [{"name": "Laptop", "quantity": 1}, {"name": "Keyboard", "quantity": 1}], "total": 900.00, "shipped": True}
     orders_repository.insert_document(my_doc)
 
 @pytest.mark.skip(reason="interaction with the database")
 def test_insert_list_of_documents():
     orders_repository = OrdersRepository(conn)
     my_doc = [
-        {"order_id": 2, "customer": "Alice Smith", "items": ["Keyboard"], "total": 120.50, "shipped": False},
-        {"order_id": 3, "customer": "Bob Johnson", "items": ["Mouse"], "total": 25.99, "shipped": True},
-        {"order_id": 4, "customer": "Emma Brown", "items": ["Headphones"], "total": 80.30, "shipped": False}
+        {"order_id": 2, "customer": "Alice Smith", "items": [{"name": "Keyboard", "quantity": 1}], "total": 120.50, "shipped": False},
+        {"order_id": 3, "customer": "Bob Johnson", "items": [{"name": "Mouse", "quantity": 1}], "total": 25.99, "shipped": True},
+        {"order_id": 4, "customer": "Emma Brown", "items": [{"name": "Headphones", "quantity": 2}], "total": 80.30, "shipped": False},
+        {"order_id": 5, "customer": "David Wilson", "items": [{"name": "Monitor", "quantity": 1}], "total": 450.00, "shipped": True}
     ]
     orders_repository.insert_list_of_documents(my_doc)
 
@@ -54,3 +55,34 @@ def test_select_if_property_exists():
     print(response)
     for doc in response:
         print(doc)
+
+@pytest.mark.skip(reason="interaction with the database")
+def test_select_many_with_multiple_filter():
+    orders_repository = OrdersRepository(conn)
+    doc_filter = {
+        "shipped": True,
+        "items.name": "Laptop"
+    }
+    response = orders_repository.select_many(doc_filter)
+    for doc in response:
+        print(doc)
+
+@pytest.mark.skip(reason="interaction with the database")
+def test_select_many_with_or_filter():
+    orders_repository = OrdersRepository(conn)
+    doc_filter = {
+        "$or": [
+            {"shipped": True},
+            {"items.quantity": 2}
+        ]
+    }
+    response = orders_repository.select_many(doc_filter)
+    for doc in response:
+        print(doc)
+
+@pytest.mark.skip(reason="interaction with the database")
+def test_select_by_object_id():
+    orders_repository = OrdersRepository(conn)
+    object_id = "678ae9ddc62fca13b6e23dd3"
+    response = orders_repository.select_by_object_id(object_id)
+    print(f"\n{response}")
