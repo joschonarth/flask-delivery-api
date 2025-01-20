@@ -106,10 +106,12 @@ def test_edit_registry():
     repo = OrdersRepository(db_connection)
 
     object_id = "60b725f10c9ac7472f3d8d52"
-    repo.edit_registry(object_id)
+    update_fields = {"total": 1000}
+
+    repo.edit_registry(object_id, update_fields)
 
     assert collection.update_one_attributes["doc_filter"] == {"_id": ObjectId(object_id)}
-    assert collection.update_one_attributes["update"] == {"$set": {"total": 1000}}
+    assert collection.update_one_attributes["update"] == {"$set": update_fields}
 
 def test_edit_many_registries():
     collection = CollectionMock()

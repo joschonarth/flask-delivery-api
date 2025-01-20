@@ -31,7 +31,7 @@ class OrdersRepositoryInterface(ABC):
         pass
 
     @abstractmethod
-    def edit_registry(self, object_id: str) -> None:
+    def edit_registry(self, order_id: str, update_fields: dict) -> None:
         pass
 
     @abstractmethod
