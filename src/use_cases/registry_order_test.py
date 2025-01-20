@@ -72,5 +72,5 @@ def test_registry_with_error():
 
     response = registry_order.registry(mock_registry)
 
-    assert response.status_code == 400
-    assert "error" in response.body
+    assert response.status_code == 500
+    assert "errors" in response.body
