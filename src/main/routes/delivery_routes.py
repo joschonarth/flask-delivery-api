@@ -1,9 +1,10 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, Response
 from src.main.http_types.http_request import HttpRequest
 
 from src.main.composer.registry_order_composer import registry_order_composer
 from src.main.composer.registry_finder_composer import registry_finder_composer
 from src.main.composer.registry_updater_composer import registry_updater_composer
+from src.main.composer.registry_deleter_composer import registry_deleter_composer
 
 delivery_routes_bp = Blueprint("delivery_routes", __name__)
 
@@ -33,3 +34,11 @@ def update_order(order_id):
     response = use_case.update(http_request)
 
     return jsonify(response.body), response.status_code
+
+@delivery_routes_bp.route("/delivery/order/<order_id>", methods=["DELETE"])
+def delete_order(order_id):
+    use_case = registry_deleter_composer()
+    http_request = HttpRequest(path_params={ "order_id": order_id })
+    use_case.delete(http_request)
+
+    return Response(status=204)
