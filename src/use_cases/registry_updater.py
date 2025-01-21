@@ -2,6 +2,7 @@ from src.models.repositories.interfaces.orders_repository import OrdersRepositor
 from src.main.http_types.http_request import HttpRequest
 from src.main.http_types.http_response import HttpResponse
 from src.validators.registry_updater_validator import registry_updater_validator
+from src.errors.types.http_not_found import HttpNotFoundError
 from src.errors.error_handler import error_handler
 
 class RegistryUpdater:
@@ -11,6 +12,7 @@ class RegistryUpdater:
     def update(self, http_request: HttpRequest) -> HttpResponse:
         try:
             order_id = http_request.path_params["order_id"]
+            self.__search_order(order_id)
             body = http_request.body
             self.__validate_body(body)
 
@@ -18,6 +20,12 @@ class RegistryUpdater:
             return self.__format_response(order_id)
         except Exception as exception:
             return error_handler(exception)
+
+    def __search_order(self, order_id: str) -> dict:
+        order = self.__orders_repository.select_by_object_id(order_id)
+        if not order:
+            raise HttpNotFoundError("Order not found")
+        return order
 
     def __validate_body(self, body: dict) -> None:
         registry_updater_validator(body)
