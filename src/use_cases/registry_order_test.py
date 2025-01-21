@@ -19,7 +19,6 @@ def test_registry():
     mock_registry = HttpRequest(
         body={
             "data": {
-                "order_id": 1,
                 "customer": "John Doe",
                 "items": [
                     {"name": "Laptop", "quantity": 1},
@@ -33,7 +32,6 @@ def test_registry():
 
     response = registry_order.registry(mock_registry)
 
-    assert repo.insert_document_att["document"]["order_id"] == 1
     assert repo.insert_document_att["document"]["customer"] == "John Doe"
     assert repo.insert_document_att["document"]["items"] == [
         {"name": "Laptop", "quantity": 1},
@@ -58,7 +56,6 @@ def test_registry_with_error():
     mock_registry = HttpRequest(
         body={
             "data": {
-                "order_id": 1,
                 "customer": "John Doe",
                 "items": [
                     {"name": "Laptop", "quantity": 1},

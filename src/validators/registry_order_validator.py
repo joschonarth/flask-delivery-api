@@ -6,7 +6,6 @@ def registry_order_validator(body: any):
         "data": {
             "type": "dict",
             "schema": {
-                "order_id": { "type": "integer", "required": True },
                 "customer": { "type": "string", "required": True },
                 "items": {
                     "type": "list", "required": True, "schema": {

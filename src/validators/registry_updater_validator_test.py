@@ -1,6 +1,6 @@
 import pytest
-from .registry_updater_validator import registry_updater_validator
 from src.errors.types.http_unprocessable_entity import HttpUnprocessableEntityError
+from .registry_updater_validator import registry_updater_validator
 
 def test_registry_updater_validator():
     body = {
