@@ -5,6 +5,7 @@ from src.main.composer.registry_order_composer import registry_order_composer
 from src.main.composer.registry_finder_composer import registry_finder_composer
 from src.main.composer.registry_updater_composer import registry_updater_composer
 from src.main.composer.registry_deleter_composer import registry_deleter_composer
+from src.main.composer.registry_lister_composer import registry_lister_composer
 
 delivery_routes_bp = Blueprint("delivery_routes", __name__)
 
@@ -42,3 +43,11 @@ def delete_order(order_id):
     use_case.delete(http_request)
 
     return Response(status=204)
+
+@delivery_routes_bp.route("/delivery/orders", methods=["GET"])
+def list_orders():
+    use_case = registry_lister_composer()
+    http_request = HttpRequest(query=request.args.to_dict())
+    response = use_case.list(http_request)
+
+    return jsonify(response.body), response.status_code
