@@ -1,20 +1,25 @@
 from src.main.http_types.http_request import HttpRequest
 from .registry_finder import RegistryFinder
 
-def test_find():
-    class OrdersRepositoryMock:
-        def select_by_object_id(self, order_id: str):
-            return {
-                "_id": order_id,
-                "customer": "Jane Doe",
-                "items": [
-                    {"name": "Mouse", "quantity": 1},
-                    {"name": "Monitor", "quantity": 2}
-                ],
-                "total": 300.00,
-                "shipped": False
-            }
+class OrdersRepositoryMock:
+    def select_by_object_id(self, order_id: str):
+        return {
+            "_id": order_id,
+            "customer": "Jane Doe",
+            "items": [
+                {"name": "Mouse", "quantity": 1},
+                {"name": "Monitor", "quantity": 2}
+            ],
+            "total": 300.00,
+            "shipped": False
+        }
 
+class OrdersRepositoryMockError:
+    def select_by_object_id(self, order_id: str):
+        _ = order_id
+        return None
+
+def test_find():
     repo = OrdersRepositoryMock()
     registry_finder = RegistryFinder(repo)
 
@@ -40,11 +45,6 @@ def test_find():
     }
 
 def test_find_with_error():
-    class OrdersRepositoryMockError:
-        def select_by_object_id(self, order_id: str):
-            _ = order_id
-            return None
-
     repo = OrdersRepositoryMockError()
     registry_finder = RegistryFinder(repo)
 
