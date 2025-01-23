@@ -1,12 +1,16 @@
+import os
+from dotenv import load_dotenv
 from pymongo import MongoClient
+
+load_dotenv()
 
 class DBConnectionHandler:
     def __init__(self) -> None:
         self.__connection_string = 'mongodb://{}:{}@{}:{}/?authSource=admin'.format(
-            "admin",
-            "password",
-            "localhost",
-            "27017"
+            os.getenv("MONGO_USER"),
+            os.getenv("MONGO_PASSWORD"),
+            os.getenv("MONGO_HOST"),
+            os.getenv("MONGO_PORT")
         )
         self.__database_name = "delivery_db"
         self.__client = None
